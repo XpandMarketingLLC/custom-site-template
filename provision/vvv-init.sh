@@ -43,6 +43,19 @@ install_plugins() {
   fi
 }
 
+install_acf_pro() {
+  ACF_KEY=b3JkZXJfaWQ9ODIzOTR8dHlwZT1wZXJzb25hbHxkYXRlPTIwMTYtMDUtMjYgMDc6NDk6MjU=
+  ACF_LATEST_URL=https://connect.advancedcustomfields.com/v2/plugins/download\?p=pro&k=${ACF_KEY}
+  # get plugin path
+  acf_zip_file=”${VVV_PATH_TO_SITE}/acf-pro.zip”
+  # get acf zip file
+  wget -O ${acf_zip_file} ${ACF_LATEST_URL}
+  # install & activate acf
+  noroot wp plugin install ${acf_zip_file} –activate
+  # remove zip file
+  rm ${acf_zip_file}
+}
+
 install_themes() {
   WP_THEMES=$(get_config_value 'install_themes' '')
   if [ ! -z "${WP_THEMES}" ]; then
@@ -221,5 +234,6 @@ copy_nginx_configs
 setup_wp_config_constants
 install_plugins
 install_themes
+install_acf_pro
 
 echo " * Site Template provisioner script completed for ${VVV_SITE_NAME}"
